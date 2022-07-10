@@ -1,11 +1,9 @@
 
-// import './sass/main.scss';
 import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { GalleryApiService } from './js/galleryIP'
 import { imageCreate } from './js/imageCreate';
-// import {galleryTpl} from './templates/gallery.hbs';
 
 const refs = {
     formEl: document.querySelector('.search-form'),
@@ -38,15 +36,9 @@ async function onClickSubmit(e) {
         try {
             galleryApiService.resetPage();
             const urlObj = await galleryApiService.fetchGallery(galleryApiService.searchQuery);
-            //refs.divGallery.innerHTML = imageCreate(urlObj.hits);
-            //refs.loadMoreEl.classList.remove('is-hidden'); // скрыть кнопку при пустом поиске    
-            //Notiflix.Notify.success(`Hooray! We found ${urlObj.totalHits} images`);
-            //simpleLightbox = new SimpleLightbox(".gallery a", optionsSL).refresh();
-            //lightbox.refresh(); //вызов лайтбокса
         if (urlObj.totalHits < galleryApiService.per_page) {
             refs.loadMoreEl.classList.add('is-hidden');
             Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-            //};
         } else {
             refs.divGallery.innerHTML = imageCreate(urlObj.hits);
             refs.loadMoreEl.classList.remove('is-hidden');
@@ -56,7 +48,6 @@ async function onClickSubmit(e) {
         };
 
         } catch (error) {
-            //Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
             ifError();
         };
     };
@@ -67,10 +58,10 @@ async function onLoadMore() {
     try {
         galleryApiService.incrementPage();
         const urlObj = await galleryApiService.fetchGallery(galleryApiService.searchQuery);
-        refs.loadMoreEl.classList.remove('is-hidden'); // возвращает кнопку
+        refs.loadMoreEl.classList.remove('is-hidden'); 
         refs.divGallery.insertAdjacentHTML('beforeend', imageCreate(urlObj.hits));
         simpleLightbox = new SimpleLightbox(".gallery a", optionsSL).refresh();
-        //lightbox.refresh();
+        
         const { height: cardHeight } = refs.divGallery.firstElementChild.getBoundingClientRect();    
         window.scrollBy({
         top: cardHeight * 2,
@@ -81,20 +72,11 @@ async function onLoadMore() {
             return Notiflix.Notify.success('Your search has come to an end');
         }
     } catch (error) {      
-        //refs.loadMoreEl.classList.add('is-hidden'); // добавить кнопку при пустом поиске
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
     };
 };
-
-// function appendHitsMarkup(hits) {
-//   refs.divGallery.insertAdjacentHTML('beforeend', galleryTpl(hits));
-// }
 
 function clearHitsContainer() {
   refs.divGallery.innerHTML = '';
 }
 
-// const lightbox = new SimpleLightbox('.gallery a', {
-//   captionsData: 'alt',
-//   captionDelay: 250,
-// });
