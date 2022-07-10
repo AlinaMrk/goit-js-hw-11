@@ -45,9 +45,11 @@ async function onClickSubmit(e) {
             //lightbox.refresh(); //вызов лайтбокса
         if (urlObj.totalHits < galleryApiService.per_page) {
             refs.loadMoreEl.classList.add('is-hidden');
+            Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
             };
         } catch (error) {
-            Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+            //Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+            ifError();
         };
     };
 };
